@@ -10,16 +10,18 @@ function hello(text: string) {
       <p>Drag your .csv file here to start uploading.</p>
       <p>----------- OR -----------</p>
       <div class="card-actions justify-center">
-        <form v-on:submit.prevent="hello('hello')">
-          <button class="btn btn-primary">
-            <label for="myfile">Browse File</label>
-          </button>
+        <form
+          v-on:submit.prevent="hello('hello')"
+          enctype="multipart/form-data"
+        >
+          <label class="btn btn-primary" for="myfile">Browse File</label>
           <input
-            class="invisible"
+            class="invisible fixed"
             type="file"
             id="myfile"
             name="myfile"
           /><br /><br />
+          <button class="btn btn-primary" type="submit">Upload</button>
         </form>
       </div>
     </div>
