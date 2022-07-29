@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import UploadCard from '@/components/UploadCard.vue';
+import UploadCard2 from '@/components/UploadCard2.vue';
 </script>
 
 <template>
@@ -16,6 +17,9 @@ import UploadCard from '@/components/UploadCard.vue';
           src="https://via.placeholder.com/500x400/000000.png"
           alt="very long placeholder"
         />
+      </section>
+      <section>
+        <UploadCard2></UploadCard2>
       </section>
     </main>
   </main>
