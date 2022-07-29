@@ -3,7 +3,10 @@ import HelloWorld from './components/HelloWorld.vue';
 </script>
 
 <template>
-  <main>
-    <HelloWorld msg="You did it!" />
+  <main class="flex flex-row justify-center">
+    <div>
+      <HelloWorld msg="You did it!" />
+      <button class="btn btn-primary">Button</button>
+    </div>
   </main>
 </template>
