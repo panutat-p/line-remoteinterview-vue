@@ -2,7 +2,7 @@
 import { onMounted, ref } from 'vue';
 import type { UploadDto } from '@/types/upload.dto';
 import type { ResultDto } from '@/types/result.dto';
-import { upload } from '@/composable/upload';
+import { uploadWithProgress } from '@/composable/upload';
 
 const props = defineProps<{ fileName: string; data: string }>();
 const emit = defineEmits<{
@@ -17,9 +17,13 @@ onMounted(() => {
 });
 
 async function uploadFile(data: string) {
+  const f = (progressEvent: any) => {
+    const { loaded, total } = progressEvent;
+    progress.value = Math.round((loaded / total) * 100);
+  };
   try {
     const payload: UploadDto = { data: data };
-    const result = await upload(payload);
+    const result = await uploadWithProgress(payload, f);
     console.log(result);
     emit('result', result);
   } catch (e: any) {
@@ -43,16 +47,15 @@ async function uploadFile(data: string) {
         />
       </section>
       <section>
-        <div class="text-3l text-center">{{ fileName }}</div>
+        <p>
+          <span class="float-left">{{ fileName }}</span>
+          <span class="float-right">{{ progress }} %</span>
+        </p>
         <progress
-          class="progress progress-primary w-56"
+          class="progress progress-primary w-56 h-5"
           v-bind:value="progress"
           max="100"
         ></progress>
-        <div>{{ Math.round(progress) }}</div>
-        <div class="flex flex-row justify-center">
-          <button class="btn loading">UPLOADING</button>
-        </div>
       </section>
     </div>
   </div>
