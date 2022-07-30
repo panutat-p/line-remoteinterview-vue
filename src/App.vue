@@ -21,19 +21,17 @@ const result = ref<ResultDto>();
           @result="(r) => (result = r)"
         ></UploadCard>
       </section>
-      <section>
-        <div class="h-20 bg-green-200 text-3l text-center">{{ fileName }}</div>
+      <section v-if="isLoading">
+        <div class="flex flex-row justify-center">
+          <button class="btn loading">loading</button>
+        </div>
+        <div class="text-3l text-center">{{ fileName }}</div>
       </section>
       <section class="flex flex-row justify-center">
         <img
           src="https://via.placeholder.com/500x400/000000.png"
           alt="very long placeholder"
         />
-      </section>
-      <section v-if="isLoading">
-        <div class="flex flex-row justify-center h-24">
-          <button class="btn loading">loading</button>
-        </div>
       </section>
       <section>
         <div>
