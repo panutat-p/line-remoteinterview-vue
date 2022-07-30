@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import UploadCard from '@/components/UploadCard.vue';
 import UploadCard2 from '@/components/UploadCard2.vue';
+import { ref } from 'vue';
+
+const count = ref(0);
+
+function callback(n: number) {
+  console.log('callback()');
+  count.value += n;
+}
 </script>
 
 <template>
@@ -10,7 +18,7 @@ import UploadCard2 from '@/components/UploadCard2.vue';
         <h1 class="text-5xl text-gray-600 text-center">Websites Checker</h1>
       </header>
       <section class="flex flex-row justify-center mb-4">
-        <UploadCard></UploadCard>
+        <UploadCard @increase-by="(n) => callback(n)"></UploadCard>
       </section>
       <section class="flex flex-row justify-center">
         <img
@@ -20,6 +28,11 @@ import UploadCard2 from '@/components/UploadCard2.vue';
       </section>
       <section>
         <UploadCard2></UploadCard2>
+      </section>
+      <section>
+        <div class="text-3xl">
+          {{ count }}
+        </div>
       </section>
     </main>
   </main>

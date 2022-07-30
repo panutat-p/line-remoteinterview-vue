@@ -8,6 +8,8 @@ import { getBase64 } from '@/composable/utils';
 const file = ref<{ files: FileList }>();
 const result = ref<ResultDto>();
 
+defineEmits(['increaseBy']);
+
 async function uploadFile() {
   let base64: string;
   if (file.value) {
@@ -65,5 +67,8 @@ async function uploadFile() {
   </div>
   <div>
     {{ result }}
+  </div>
+  <div>
+    <button class="btn" @click="$emit('increaseBy', 1)">click me</button>
   </div>
 </template>
