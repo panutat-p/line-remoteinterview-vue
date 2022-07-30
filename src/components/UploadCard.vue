@@ -6,11 +6,11 @@ import type { UploadDto } from '@/types/upload.dto';
 import { getBase64 } from '@/composable/utils';
 
 const file = ref<{ files: FileList }>();
-const fileName = ref('');
 
 const emit = defineEmits<{
-  (e: 'result', value: ResultDto): void;
+  (e: 'fileName', value: string): void;
   (e: 'isLoading', value: boolean): void;
+  (e: 'result', value: ResultDto): void;
 }>();
 
 async function uploadFile() {
@@ -18,7 +18,7 @@ async function uploadFile() {
   let base64: string;
   if (file.value) {
     console.log(file.value.files[0]);
-    fileName.value = file.value?.files[0].name;
+    emit('fileName', file.value?.files[0].name);
     if (file.value?.files.length > 0) {
       base64 = await getBase64(file.value.files[0]);
       console.log(base64);
@@ -39,6 +39,7 @@ async function uploadFile() {
   try {
     const payload: UploadDto = { data: data };
     const result = await upload(payload);
+    console.log(result);
     emit('result', result);
   } catch (e: any) {
     console.log(e);
@@ -51,7 +52,9 @@ async function uploadFile() {
 </script>
 
 <template>
-  <div class="card w-96 h-96 bg-base-100 border-dashed border-2 border-sky-500">
+  <main
+    class="card w-96 h-80 bg-base-100 border-dashed border-2 border-sky-500"
+  >
     <div class="mt-5 mb-5 text-center">
       <img
         class="object-contain h-24 mx-auto"
@@ -61,19 +64,19 @@ async function uploadFile() {
       <p class="mt-5 mb-10">Drag your .csv file here to start uploading.</p>
       <p class="mb-3">----------- OR -----------</p>
       <div class="card-actions justify-center">
-        <form v-on:submit.prevent="uploadFile()" enctype="multipart/form-data">
-          <label class="btn btn-primary" for="file">Browse File</label>
+        <div>
+          <label class="btn btn-primary" for="file">BROWSE FILE</label>
           <input
+            v-on:change="uploadFile()"
             class="fixed hidden"
             type="file"
+            accept=".csv"
             id="file"
             name="csv"
             ref="file"
-          /><br /><br />
-          <div class="text-md">{{ fileName }}</div>
-          <button class="btn btn-primary" type="submit">Upload</button>
-        </form>
+          />
+        </div>
       </div>
     </div>
-  </div>
+  </main>
 </template>

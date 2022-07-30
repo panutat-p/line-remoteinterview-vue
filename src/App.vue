@@ -3,16 +3,9 @@ import UploadCard from '@/components/UploadCard.vue';
 import { ref } from 'vue';
 import type { ResultDto } from '@/types/result.dto';
 
-const result = ref<ResultDto>();
+const fileName = ref('');
 const isLoading = ref(false);
-
-function showResult(r: ResultDto) {
-  result.value = r;
-}
-
-function showIsLoading(b: boolean) {
-  isLoading.value = b;
-}
+const result = ref<ResultDto>();
 </script>
 
 <template>
@@ -23,9 +16,13 @@ function showIsLoading(b: boolean) {
       </header>
       <section class="flex flex-row justify-center mb-4">
         <UploadCard
-          @result="(s) => showResult(s)"
-          @isLoading="(b) => showIsLoading(b)"
+          @fileName="(s) => (fileName = s)"
+          @isLoading="(b) => (isLoading = b)"
+          @result="(r) => (result = r)"
         ></UploadCard>
+      </section>
+      <section>
+        <div class="h-20 bg-green-200 text-3l text-center">{{ fileName }}</div>
       </section>
       <section class="flex flex-row justify-center">
         <img
