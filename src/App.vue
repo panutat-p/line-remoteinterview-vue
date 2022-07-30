@@ -7,13 +7,10 @@ const result = ref<ResultDto>();
 const isLoading = ref(false);
 
 function showResult(r: ResultDto) {
-  console.log('showResult()');
-  console.log(r);
   result.value = r;
 }
 
 function showIsLoading(b: boolean) {
-  console.log('showIsLoading()');
   isLoading.value = b;
 }
 </script>
