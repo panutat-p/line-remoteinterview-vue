@@ -9,7 +9,6 @@ const file = ref<{ files: FileList }>();
 const fileName = ref('');
 
 const emit = defineEmits<{
-  (e: 'increaseBy', n: number): void;
   (e: 'result', value: ResultDto): void;
   (e: 'isLoading', value: boolean): void;
 }>();
@@ -52,10 +51,15 @@ async function uploadFile() {
 </script>
 
 <template>
-  <div class="card w-96 h-80 bg-base-100 border-dashed border-2 border-sky-500">
-    <div class="text-center">
-      <p class="mt-5 mb-20">Drag your .csv file here to start uploading.</p>
-      <p class="mb-5">----------- OR -----------</p>
+  <div class="card w-96 h-96 bg-base-100 border-dashed border-2 border-sky-500">
+    <div class="mt-5 mb-5 text-center">
+      <img
+        class="object-contain h-24 mx-auto"
+        src="https://cdn-icons-png.flaticon.com/512/617/617449.png"
+        alt="CSV icon"
+      />
+      <p class="mt-5 mb-10">Drag your .csv file here to start uploading.</p>
+      <p class="mb-3">----------- OR -----------</p>
       <div class="card-actions justify-center">
         <form v-on:submit.prevent="uploadFile()" enctype="multipart/form-data">
           <label class="btn btn-primary" for="file">Browse File</label>
