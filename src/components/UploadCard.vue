@@ -52,9 +52,7 @@ async function uploadFile() {
 </script>
 
 <template>
-  <main
-    class="card w-96 h-80 bg-base-100 border-dashed border-2 border-sky-500"
-  >
+  <main class="card w-96 h-80 bg-blue-50 border-dashed border-2 border-sky-500">
     <div class="mt-5 mb-5 text-center">
       <img
         class="object-contain h-24 mx-auto"
