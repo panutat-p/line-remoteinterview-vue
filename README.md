@@ -12,7 +12,9 @@
 - Bonus if you can make drag and drop work properly
 - Bonus if you come up with some frontend tests
 
-This template should help get you started developing with Vue 3 in Vite.
+
+## Edge Cases
+- ✅ Rerender components when click upload new file
 
 ## Project Setup
 

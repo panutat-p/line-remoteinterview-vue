@@ -1,27 +1,25 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { upload } from '@/composable/upload';
-import type { ResultDto } from '@/types/result.dto';
-import type { UploadDto } from '@/types/upload.dto';
 import { getBase64 } from '@/composable/utils';
+import type { ResultDto } from '@/types/result.dto';
 
 const file = ref<{ files: FileList }>();
 
 const emit = defineEmits<{
-  (e: 'fileName', value: string): void;
-  (e: 'isLoading', value: boolean): void;
   (e: 'result', value: ResultDto): void;
+  (e: 'fileName', value: string): void;
+  (e: 'data', value: string): void;
+  (e: 'isLoading', value: boolean): void;
 }>();
 
-async function uploadFile() {
-  emit('isLoading', true);
+async function getCsvData() {
+  emit('result', null);
   let base64: string;
   if (file.value) {
-    console.log(file.value.files[0]);
+    console.log(file.value?.files[0]);
     emit('fileName', file.value?.files[0].name);
     if (file.value?.files.length > 0) {
       base64 = await getBase64(file.value.files[0]);
-      console.log(base64);
     } else {
       alert('Invalid File');
       return;
@@ -36,18 +34,11 @@ async function uploadFile() {
     return;
   }
   const data = arr[1];
-  try {
-    const payload: UploadDto = { data: data };
-    const result = await upload(payload);
-    console.log(result);
-    emit('result', result);
-  } catch (e: any) {
-    console.log(e);
-    console.log(e?.response?.data);
-    alert(JSON.stringify(e?.response?.data));
-  } finally {
-    emit('isLoading', false);
-  }
+  console.log(data);
+  emit('data', data);
+  emit('isLoading', true);
+  console.log('isLoading true');
+  document.getElementById('file').value = null;
 }
 </script>
 
@@ -65,7 +56,7 @@ async function uploadFile() {
         <div>
           <label class="btn btn-primary" for="file">BROWSE FILE</label>
           <input
-            v-on:change="uploadFile()"
+            v-on:change="getCsvData()"
             class="fixed hidden"
             type="file"
             accept=".csv"
