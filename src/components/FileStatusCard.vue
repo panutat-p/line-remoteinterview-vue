@@ -13,7 +13,6 @@ const emit = defineEmits<{
 const progress = ref(0);
 
 onMounted(() => {
-  console.log('mount FileStatusCard');
   uploadFile(props.data);
 });
 
@@ -29,7 +28,6 @@ async function uploadFile(data: string) {
     alert(JSON.stringify(e?.response?.data));
   } finally {
     emit('isLoading', false);
-    console.log('isLoading false');
   }
 }
 </script>

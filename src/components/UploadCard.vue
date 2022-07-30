@@ -6,7 +6,7 @@ import type { ResultDto } from '@/types/result.dto';
 const file = ref<{ files: FileList }>();
 
 const emit = defineEmits<{
-  (e: 'result', value: ResultDto): void;
+  (e: 'result', value: ResultDto | null): void;
   (e: 'fileName', value: string): void;
   (e: 'data', value: string): void;
   (e: 'isLoading', value: boolean): void;
@@ -37,8 +37,9 @@ async function getCsvData() {
   console.log(data);
   emit('data', data);
   emit('isLoading', true);
-  console.log('isLoading true');
   document.getElementById('file').value = null;
+  // file.value = null;
+  // this.$ref.file.value = '';
 }
 </script>
 
