@@ -1,7 +1,10 @@
 import { DateTime } from 'luxon';
 
-export function toMinute(milli: number): string {
-  return DateTime.fromMillis(milli).toFormat("mm'm' ss's'");
+export function toMinuteSecond(milli: number): string {
+  if (milli < 1000) {
+    return `${milli} milliseconds`;
+  }
+  return DateTime.fromMillis(milli).toFormat("mm 'minutes' ss 'seconds'");
 }
 
 export async function getBase64(blob: Blob): Promise<string> {

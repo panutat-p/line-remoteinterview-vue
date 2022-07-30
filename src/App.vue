@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import UploadCard from '@/components/UploadCard.vue';
+import ResultCard from '@/components/ResultCard.vue';
 import { ref } from 'vue';
 import type { ResultDto } from '@/types/result.dto';
 
@@ -27,16 +28,8 @@ const result = ref<ResultDto>();
         </div>
         <div class="text-3l text-center">{{ fileName }}</div>
       </section>
-      <section class="flex flex-row justify-center">
-        <img
-          src="https://via.placeholder.com/500x400/000000.png"
-          alt="very long placeholder"
-        />
-      </section>
-      <section>
-        <div>
-          {{ result }}
-        </div>
+      <section v-if="result" class="flex flex-row justify-center mb-4">
+        <ResultCard v-bind:data="result"></ResultCard>
       </section>
     </main>
   </main>
