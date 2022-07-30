@@ -2,20 +2,11 @@
 import { ref } from 'vue';
 import { upload } from '@/composable/upload';
 import type { ResultDto } from '@/types/result.dto';
-import { DateTime } from 'luxon';
 import type { UploadDto } from '@/types/upload.dto';
+import { getBase64 } from '@/composable/utils';
 
 const file = ref<{ files: FileList }>();
-const result = ref<ResultDto>({});
-
-function getBase64(blob: Blob) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(blob);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
-}
+const result = ref<ResultDto>();
 
 async function uploadFile() {
   let base64: string;
@@ -42,17 +33,13 @@ async function uploadFile() {
   try {
     const payload: UploadDto = { data: data };
     result.value = await upload(payload);
-  } catch (e) {
+  } catch (e: any) {
     console.log(e);
     console.log(e?.response?.data);
-    alert(e?.response?.data?.error);
+    alert(JSON.stringify(e?.response?.data));
   } finally {
     console.log('uploadFile(data)');
   }
-}
-
-function toMinute(milli: number): string {
-  return DateTime.fromMillis(milli).toFormat("mm'm' ss's'");
 }
 </script>
 
@@ -63,9 +50,9 @@ function toMinute(milli: number): string {
       <p class="mb-5">----------- OR -----------</p>
       <div class="card-actions justify-center">
         <form v-on:submit.prevent="uploadFile()" enctype="multipart/form-data">
-          <label class="btn btn-primary" for="myfile">Browse File</label>
+          <label class="btn btn-primary" for="file">Browse File</label>
           <input
-            class=""
+            class="fixed hidden"
             type="file"
             id="file"
             name="csv"
