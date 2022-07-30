@@ -6,41 +6,47 @@ import type { UploadDto } from '@/types/upload.dto';
 import { getBase64 } from '@/composable/utils';
 
 const file = ref<{ files: FileList }>();
-const result = ref<ResultDto>();
+const fileName = ref('');
 
-defineEmits(['increaseBy']);
+const emit = defineEmits<{
+  (e: 'increaseBy', n: number): void;
+  (e: 'result', value: ResultDto): void;
+  (e: 'isLoading', value: boolean): void;
+}>();
 
 async function uploadFile() {
+  emit('isLoading', true);
   let base64: string;
   if (file.value) {
-    console.log(file.value.files);
     console.log(file.value.files[0]);
+    fileName.value = file.value?.files[0].name;
     if (file.value?.files.length > 0) {
       base64 = await getBase64(file.value.files[0]);
       console.log(base64);
     } else {
-      console.log('no file');
+      alert('Invalid File');
       return;
     }
   } else {
-    console.log('no file');
+    alert('Invalid File');
     return;
   }
   const arr = base64.split(',');
   if (arr[0] !== 'data:text/csv;base64') {
-    console.log('wrong file format');
+    alert('Accept CSV only');
     return;
   }
   const data = arr[1];
   try {
     const payload: UploadDto = { data: data };
-    result.value = await upload(payload);
+    const result = await upload(payload);
+    emit('result', result);
   } catch (e: any) {
     console.log(e);
     console.log(e?.response?.data);
     alert(JSON.stringify(e?.response?.data));
   } finally {
-    console.log('uploadFile(data)');
+    emit('isLoading', false);
   }
 }
 </script>
@@ -60,15 +66,10 @@ async function uploadFile() {
             name="csv"
             ref="file"
           /><br /><br />
+          <div class="text-md">{{ fileName }}</div>
           <button class="btn btn-primary" type="submit">Upload</button>
         </form>
       </div>
     </div>
-  </div>
-  <div>
-    {{ result }}
-  </div>
-  <div>
-    <button class="btn" @click="$emit('increaseBy', 1)">click me</button>
   </div>
 </template>

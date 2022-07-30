@@ -1,13 +1,20 @@
 <script setup lang="ts">
 import UploadCard from '@/components/UploadCard.vue';
-import UploadCard2 from '@/components/UploadCard2.vue';
 import { ref } from 'vue';
+import type { ResultDto } from '@/types/result.dto';
 
-const count = ref(0);
+const result = ref<ResultDto>();
+const isLoading = ref(false);
 
-function callback(n: number) {
-  console.log('callback()');
-  count.value += n;
+function showResult(r: ResultDto) {
+  console.log('showResult()');
+  console.log(r);
+  result.value = r;
+}
+
+function showIsLoading(b: boolean) {
+  console.log('showIsLoading()');
+  isLoading.value = b;
 }
 </script>
 
@@ -18,7 +25,10 @@ function callback(n: number) {
         <h1 class="text-5xl text-gray-600 text-center">Websites Checker</h1>
       </header>
       <section class="flex flex-row justify-center mb-4">
-        <UploadCard @increase-by="(n) => callback(n)"></UploadCard>
+        <UploadCard
+          @result="(s) => showResult(s)"
+          @isLoading="(b) => showIsLoading(b)"
+        ></UploadCard>
       </section>
       <section class="flex flex-row justify-center">
         <img
@@ -26,12 +36,14 @@ function callback(n: number) {
           alt="very long placeholder"
         />
       </section>
-      <section>
-        <UploadCard2></UploadCard2>
+      <section v-if="isLoading">
+        <div class="flex flex-row justify-center h-24">
+          <button class="btn loading">loading</button>
+        </div>
       </section>
       <section>
-        <div class="text-3xl">
-          {{ count }}
+        <div>
+          {{ result }}
         </div>
       </section>
     </main>
